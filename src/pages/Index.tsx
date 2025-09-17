@@ -1,4 +1,6 @@
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Header from "@/components/Header";
@@ -17,6 +19,21 @@ import {
 } from "lucide-react";
 
 const Index = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleStartChallenge = () => {
+    if (user) {
+      navigate('/challenges');
+    } else {
+      navigate('/auth');
+    }
+  };
+
+  const handleBrowseChallenges = () => {
+    navigate('/challenges');
+  };
+
   const featuredChallenges = [
     {
       title: "Ultimate Productivity",
@@ -98,11 +115,11 @@ const Index = () => {
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button variant="hero" size="lg" className="text-lg px-8 py-6">
+                <Button variant="hero" size="lg" className="text-lg px-8 py-6" onClick={handleStartChallenge}>
                   <Play className="w-5 h-5 mr-2" />
                   Start Your Challenge
                 </Button>
-                <Button variant="outline" size="lg" className="text-lg px-8 py-6">
+                <Button variant="outline" size="lg" className="text-lg px-8 py-6" onClick={handleBrowseChallenges}>
                   Browse Challenges
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
@@ -229,10 +246,10 @@ const Index = () => {
               that will change everything. Your 30-day transformation starts now.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="secondary" size="lg" className="text-lg px-8 py-6">
+              <Button variant="secondary" size="lg" className="text-lg px-8 py-6" onClick={handleStartChallenge}>
                 Start Free Challenge
               </Button>
-              <Button variant="outline" size="lg" className="border-white/30 text-white hover:bg-white/20 text-lg px-8 py-6">
+              <Button variant="outline" size="lg" className="border-white/30 text-white hover:bg-white/20 text-lg px-8 py-6" onClick={handleBrowseChallenges}>
                 Learn More
               </Button>
             </div>
