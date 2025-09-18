@@ -5,8 +5,14 @@ import { useChallenges } from "@/hooks/useChallenges";
 import { ChallengeCard } from "@/components/ChallengeCard";
 import Header from "@/components/Header";
 import { Search, Filter, Sparkles, Dumbbell, BookOpen, Heart, Code, Target } from "lucide-react";
+import { CreateChallengeModal } from "@/components/CreateChallengeModal";
+import { useState } from "react";
 
 const Challenges = () => {
+  const { challenges, loading, joinChallenge } = useChallenges();
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  
+  // Remove hardcoded data - keeping as fallback for empty state demo
   const featuredChallenges = [
     {
       title: "Ultimate Productivity Challenge",
@@ -134,15 +140,30 @@ const Challenges = () => {
             <Button variant="ghost">View All</Button>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredChallenges.map((challenge) => (
-              <ChallengeCard 
-                key={challenge.id} 
-                challenge={challenge}
-                onJoinChallenge={handleJoinChallenge}
-              />
-            ))}
-          </div>
+          {loading ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+            </div>
+          ) : challenges.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {challenges.map((challenge) => (
+                <ChallengeCard 
+                  key={challenge.id} 
+                  challenge={challenge}
+                  onJoinChallenge={joinChallenge}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <Target className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-2">No Challenges Available</h3>
+              <p className="text-muted-foreground mb-6">Be the first to create a challenge for the community!</p>
+              <Button onClick={() => setShowCreateModal(true)}>
+                Create Your First Challenge
+              </Button>
+            </div>
+          )}
         </div>
 
         {/* CTA Section */}
@@ -154,7 +175,7 @@ const Challenges = () => {
             Create your own custom challenge or join one of our proven programs today.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="secondary" size="lg">
+            <Button variant="secondary" size="lg" onClick={() => setShowCreateModal(true)}>
               Create Custom Challenge
             </Button>
             <Button variant="outline" size="lg" className="border-white/30 text-white hover:bg-white/20">
@@ -163,6 +184,11 @@ const Challenges = () => {
           </div>
         </div>
       </main>
+      
+      <CreateChallengeModal 
+        open={showCreateModal} 
+        onOpenChange={setShowCreateModal}
+      />
     </div>
   );
 };

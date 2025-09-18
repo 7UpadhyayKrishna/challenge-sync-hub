@@ -221,8 +221,53 @@ const Index = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            {featuredChallenges.map((challenge, index) => (
-              <ChallengeCard key={index} {...challenge} />
+            {featuredChallenges.map((feature, index) => (
+              <Card key={index} className="group hover:shadow-card transition-all duration-300 hover:-translate-y-1 border-0 shadow-sm">
+                <CardHeader className="pb-3">
+                  <div className="flex items-start justify-between">
+                    <Badge variant="secondary" className="mb-2 text-xs">
+                      {feature.category}
+                    </Badge>
+                    <div className="flex items-center space-x-1 text-sm text-muted-foreground">
+                      <Star className="w-3 h-3 fill-current text-primary" />
+                      <span>{feature.rating}</span>
+                    </div>
+                  </div>
+                  <CardTitle className="text-lg group-hover:text-primary transition-colors">
+                    {feature.title}
+                  </CardTitle>
+                </CardHeader>
+                
+                <CardContent className="py-0">
+                  <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{feature.description}</p>
+                  
+                  <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center space-x-4">
+                      <div className="flex items-center space-x-1 text-muted-foreground">
+                        <Users className="w-4 h-4" />
+                        <span>{feature.participants}</span>
+                      </div>
+                      <div className="flex items-center space-x-1 text-muted-foreground">
+                        <Target className="w-4 h-4" />
+                        <span>{feature.duration} days</span>
+                      </div>
+                    </div>
+                    <Badge variant="outline" className="bg-primary/20 text-primary">
+                      {feature.difficulty}
+                    </Badge>
+                  </div>
+                </CardContent>
+                
+                <div className="p-6 pt-4">
+                  <Button 
+                    className="w-full" 
+                    variant="outline"
+                    onClick={handleBrowseChallenges}
+                  >
+                    View Details
+                  </Button>
+                </div>
+              </Card>
             ))}
           </div>
 
