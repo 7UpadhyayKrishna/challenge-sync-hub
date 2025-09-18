@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Trophy, Users, Target, LogOut, Settings, User } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { NotificationBell } from "@/components/NotificationBell";
 
 const Header = () => {
   const { user, signOut } = useAuth();
@@ -42,11 +43,11 @@ const Header = () => {
           <a href="/challenges" className="text-muted-foreground hover:text-foreground transition-colors">
             Challenges
           </a>
+          <a href="/community" className="text-muted-foreground hover:text-foreground transition-colors">
+            Community
+          </a>
           <a href="#how-it-works" className="text-muted-foreground hover:text-foreground transition-colors">
             How it Works
-          </a>
-          <a href="#community" className="text-muted-foreground hover:text-foreground transition-colors">
-            Community
           </a>
         </nav>
 
@@ -54,6 +55,7 @@ const Header = () => {
           {user ? (
             <>
               <Button variant="hero" onClick={handleStartChallenge}>Start Challenge</Button>
+              <NotificationBell />
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-10 w-10 rounded-full">
