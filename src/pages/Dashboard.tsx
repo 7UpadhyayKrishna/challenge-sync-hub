@@ -46,7 +46,7 @@ const Dashboard = () => {
   const achievements = [
     { name: "First Week", icon: Trophy, earned: activeChallenge && getDaysCompleted(activeChallenge) >= 7 },
     { name: "Streak Master", icon: Flame, earned: activeChallenge && getDaysCompleted(activeChallenge) >= 5 },
-    { name: "Halfway Hero", icon: Target, earned: activeChallenge && getDaysCompleted(activeChallenge) >= Math.floor(activeChallenge.challenges.duration_days / 2) },
+    { name: "Halfway Hero", icon: Target, earned: activeChallenge && activeChallenge.challenges && getDaysCompleted(activeChallenge) >= Math.floor(activeChallenge.challenges.duration_days / 2) },
     { name: "Challenge Complete", icon: CheckCircle2, earned: activeChallenge?.is_completed || false }
   ];
 
@@ -72,10 +72,10 @@ const Dashboard = () => {
                 <div className="flex items-center justify-between">
                   <CardTitle className="flex items-center space-x-2">
                     <Target className="w-5 h-5 text-primary" />
-                    <span>{activeChallenge.challenges.title}</span>
+                    <span>{activeChallenge?.challenges?.title || 'Challenge'}</span>
                   </CardTitle>
                   <Badge variant="outline" className="bg-accent/20 text-accent">
-                    Day {getDaysCompleted(activeChallenge)} of {activeChallenge.challenges.duration_days}
+                    Day {getDaysCompleted(activeChallenge)} of {activeChallenge?.challenges?.duration_days || 0}
                   </Badge>
                 </div>
               </CardHeader>
@@ -84,14 +84,14 @@ const Dashboard = () => {
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium">Progress</span>
-                      <span className="text-sm text-muted-foreground">
-                        {Math.round((getDaysCompleted(activeChallenge) / activeChallenge.challenges.duration_days) * 100)}%
-                      </span>
+                    <span className="text-sm text-muted-foreground">
+                      {activeChallenge?.challenges ? Math.round((getDaysCompleted(activeChallenge) / activeChallenge.challenges.duration_days) * 100) : 0}%
+                    </span>
                     </div>
-                    <Progress 
-                      value={(getDaysCompleted(activeChallenge) / activeChallenge.challenges.duration_days) * 100} 
-                      className="h-2"
-                    />
+                  <Progress 
+                    value={activeChallenge?.challenges ? (getDaysCompleted(activeChallenge) / activeChallenge.challenges.duration_days) * 100 : 0} 
+                    className="h-2"
+                  />
                   </div>
 
                   <div className="grid grid-cols-3 gap-4">
@@ -117,7 +117,7 @@ const Dashboard = () => {
                       <div className="flex items-center justify-center w-12 h-12 bg-secondary rounded-lg mb-2 mx-auto">
                         <Target className="w-6 h-6 text-secondary-foreground" />
                       </div>
-                      <div className="text-2xl font-bold">{activeChallenge.challenges.category}</div>
+                      <div className="text-2xl font-bold">{activeChallenge?.challenges?.category || 'N/A'}</div>
                       <div className="text-xs text-muted-foreground">Category</div>
                     </div>
                   </div>
