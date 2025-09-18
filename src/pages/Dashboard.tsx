@@ -179,14 +179,14 @@ const Dashboard = () => {
                 {todaysTasks.map((task, index) => (
                   <div key={index} className="flex items-center justify-between p-3 rounded-lg border">
                     <div className="flex items-center space-x-3">
-                      <button
-                        onClick={() => markTaskComplete(task.participantId, !task.completed)}
-                        className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
-                          task.completed 
-                            ? 'bg-accent border-accent text-accent-foreground' 
-                            : 'border-muted-foreground hover:border-accent'
-                        }`}
-                      >
+                    <button
+                      onClick={() => markTaskComplete(task.participantId, task.taskId, !task.completed)}
+                      className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
+                        task.completed 
+                          ? 'bg-accent border-accent text-accent-foreground' 
+                          : 'border-muted-foreground hover:border-accent'
+                      }`}
+                    >
                         {task.completed && <CheckCircle2 className="w-4 h-4" />}
                       </button>
                       <span className={`${task.completed ? 'line-through text-muted-foreground' : ''}`}>

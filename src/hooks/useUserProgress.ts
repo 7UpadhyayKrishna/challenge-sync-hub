@@ -22,6 +22,7 @@ interface TodayTask {
   completed: boolean;
   challengeId: string;
   participantId: string;
+  taskId: string;
 }
 
 export const useUserProgress = () => {
@@ -72,11 +73,13 @@ export const useUserProgress = () => {
         
         if (participant.challenges?.daily_tasks && Array.isArray(participant.challenges.daily_tasks)) {
           participant.challenges.daily_tasks.forEach((task: string, index: number) => {
+            const taskId = `${today}-task-${index}`;
             tasks.push({
               name: task,
-              completed: participant.daily_progress?.[today] || false,
+              completed: participant.daily_progress?.[taskId] || false,
               challengeId: participant.challenge_id,
-              participantId: participant.id
+              participantId: participant.id,
+              taskId: taskId
             });
           });
         }
@@ -90,16 +93,29 @@ export const useUserProgress = () => {
     }
   };
 
-  const markTaskComplete = async (participantId: string, completed: boolean) => {
+  const markTaskComplete = async (participantId: string, taskId: string, completed: boolean) => {
     if (!user) return;
-
-    const today = new Date().toISOString().split('T')[0];
     
     try {
+      // First get current progress
+      const { data: currentParticipant, error: fetchError } = await supabase
+        .from('challenge_participants')
+        .select('daily_progress')
+        .eq('id', participantId)
+        .single();
+
+      if (fetchError) throw fetchError;
+
+      // Update specific task in progress
+      const updatedProgress = {
+        ...(currentParticipant.daily_progress as Record<string, boolean> || {}),
+        [taskId]: completed
+      };
+
       const { error } = await supabase
         .from('challenge_participants')
         .update({
-          daily_progress: { [today]: completed }
+          daily_progress: updatedProgress
         })
         .eq('id', participantId);
 
