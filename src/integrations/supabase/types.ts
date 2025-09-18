@@ -14,6 +14,139 @@ export type Database = {
   }
   public: {
     Tables: {
+      challenge_participants: {
+        Row: {
+          challenge_id: string
+          completed_at: string | null
+          daily_progress: Json
+          id: string
+          is_completed: boolean | null
+          joined_at: string
+          user_id: string
+        }
+        Insert: {
+          challenge_id: string
+          completed_at?: string | null
+          daily_progress?: Json
+          id?: string
+          is_completed?: boolean | null
+          joined_at?: string
+          user_id: string
+        }
+        Update: {
+          challenge_id?: string
+          completed_at?: string | null
+          daily_progress?: Json
+          id?: string
+          is_completed?: boolean | null
+          joined_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_participants_challenge"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_participants_user"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      challenges: {
+        Row: {
+          category: string | null
+          created_at: string
+          creator_id: string
+          daily_tasks: Json
+          description: string | null
+          difficulty: string | null
+          duration_days: number
+          id: string
+          is_active: boolean | null
+          photo_visibility: string | null
+          reference_photo_url: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          creator_id: string
+          daily_tasks?: Json
+          description?: string | null
+          difficulty?: string | null
+          duration_days: number
+          id?: string
+          is_active?: boolean | null
+          photo_visibility?: string | null
+          reference_photo_url?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          creator_id?: string
+          daily_tasks?: Json
+          description?: string | null
+          difficulty?: string | null
+          duration_days?: number
+          id?: string
+          is_active?: boolean | null
+          photo_visibility?: string | null
+          reference_photo_url?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_challenges_creator"
+            columns: ["creator_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      daily_progress_photos: {
+        Row: {
+          day_number: number
+          id: string
+          participant_id: string
+          photo_url: string
+          uploaded_at: string
+        }
+        Insert: {
+          day_number: number
+          id?: string
+          participant_id: string
+          photo_url: string
+          uploaded_at?: string
+        }
+        Update: {
+          day_number?: number
+          id?: string
+          participant_id?: string
+          photo_url?: string
+          uploaded_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_progress_photos_participant"
+            columns: ["participant_id"]
+            isOneToOne: false
+            referencedRelation: "challenge_participants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null

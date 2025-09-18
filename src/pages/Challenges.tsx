@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import ChallengeCard from "@/components/ChallengeCard";
+import { useChallenges } from "@/hooks/useChallenges";
+import { ChallengeCard } from "@/components/ChallengeCard";
 import Header from "@/components/Header";
 import { Search, Filter, Sparkles, Dumbbell, BookOpen, Heart, Code, Target } from "lucide-react";
 
@@ -134,8 +135,12 @@ const Challenges = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featuredChallenges.map((challenge, index) => (
-              <ChallengeCard key={index} {...challenge} />
+            {filteredChallenges.map((challenge) => (
+              <ChallengeCard 
+                key={challenge.id} 
+                challenge={challenge}
+                onJoinChallenge={handleJoinChallenge}
+              />
             ))}
           </div>
         </div>
