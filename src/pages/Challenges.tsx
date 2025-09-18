@@ -12,75 +12,30 @@ const Challenges = () => {
   const { challenges, loading, joinChallenge } = useChallenges();
   const [showCreateModal, setShowCreateModal] = useState(false);
   
-  // Remove hardcoded data - keeping as fallback for empty state demo
-  const featuredChallenges = [
-    {
-      title: "Ultimate Productivity Challenge",
-      description: "Transform your daily habits with morning routines, focused work sessions, and evening reflections. Build the foundation for peak performance.",
-      category: "Productivity",
-      participants: 1247,
-      duration: 30,
-      difficulty: "Intermediate" as const,
-      rating: 4.8
-    },
-    {
-      title: "Fitness Transformation",
-      description: "Complete workout program combining strength training, cardio, and nutrition planning. Get in the best shape of your life.",
-      category: "Fitness",
-      participants: 892,
-      duration: 30,
-      difficulty: "Advanced" as const,
-      rating: 4.9
-    },
-    {
-      title: "Mindfulness Journey",
-      description: "Daily meditation, gratitude practice, and mindful living. Reduce stress and increase mental clarity through proven techniques.",
-      category: "Wellness",
-      participants: 623,
-      duration: 21,
-      difficulty: "Beginner" as const,
-      rating: 4.7
-    },
-    {
-      title: "Coding Bootcamp Sprint",
-      description: "Build your programming skills with daily coding exercises, project work, and technical challenges. From beginner to confident developer.",
-      category: "Learning",
-      participants: 445,
-      duration: 45,
-      difficulty: "Intermediate" as const,
-      rating: 4.6
-    },
-    {
-      title: "Creative Writing Challenge",
-      description: "Unlock your creativity with daily writing prompts, storytelling exercises, and peer feedback. Develop your unique voice.",
-      category: "Creativity",
-      participants: 312,
-      duration: 30,
-      difficulty: "Beginner" as const,
-      rating: 4.5
-    },
-    {
-      title: "Healthy Living Makeover",
-      description: "Complete lifestyle transformation focusing on nutrition, hydration, sleep, and mental health. Small changes, big results.",
-      category: "Health",
-      participants: 756,
-      duration: 30,
-      difficulty: "Beginner" as const,
-      rating: 4.8
-    }
-  ];
+  // Dynamic categories based on actual challenges
+  const getCategories = () => {
+    const categoryCounts = challenges.reduce((acc, challenge) => {
+      const category = challenge.category || 'Other';
+      acc[category] = (acc[category] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
 
-  const categories = [
-    { name: "All", icon: Target, count: 48, active: true },
-    { name: "Fitness", icon: Dumbbell, count: 12, active: false },
-    { name: "Learning", icon: BookOpen, count: 15, active: false },
-    { name: "Wellness", icon: Heart, count: 8, active: false },
-    { name: "Productivity", icon: Sparkles, count: 9, active: false },
-    { name: "Creativity", icon: Code, count: 4, active: false }
-  ];
+    const allCategories = [
+      { name: "All", icon: Target, count: challenges.length, active: true },
+      { name: "Fitness", icon: Dumbbell, count: categoryCounts['Fitness'] || 0, active: false },
+      { name: "Learning", icon: BookOpen, count: categoryCounts['Learning'] || 0, active: false },
+      { name: "Wellness", icon: Heart, count: categoryCounts['Wellness'] || 0, active: false },
+      { name: "Productivity", icon: Sparkles, count: categoryCounts['Productivity'] || 0, active: false },
+      { name: "Creativity", icon: Code, count: categoryCounts['Creativity'] || 0, active: false }
+    ];
+
+    return allCategories;
+  };
+
+  const categories = getCategories();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-16 md:pb-0">
       <Header />
       
       <main className="container mx-auto px-4 py-8">

@@ -51,20 +51,20 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-16 md:pb-0">
       <Header />
       
-      <main className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Welcome back, {user?.user_metadata?.display_name || 'Challenger'}!</h1>
-          <p className="text-muted-foreground">
+      <main className="container mx-auto px-4 py-4 sm:py-8">
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold mb-2">Welcome back, {user?.user_metadata?.display_name || 'Challenger'}!</h1>
+          <p className="text-sm sm:text-base text-muted-foreground">
             {userChallenges.length > 0 
               ? "Keep pushing towards your goals. You're doing amazing!" 
               : "Ready to start your first challenge? Let's get you started!"}
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
           {/* Active Challenge */}
           {activeChallenge ? (
             <Card className="lg:col-span-2 shadow-card">
@@ -94,30 +94,30 @@ const Dashboard = () => {
                   />
                   </div>
 
-                  <div className="grid grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div className="text-center">
-                      <div className="flex items-center justify-center w-12 h-12 bg-primary/10 rounded-lg mb-2 mx-auto">
-                        <Flame className="w-6 h-6 text-primary" />
+                      <div className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-lg mb-2 mx-auto">
+                        <Flame className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
                       </div>
-                      <div className="text-2xl font-bold text-primary">{getDaysCompleted(activeChallenge)}</div>
+                      <div className="text-xl sm:text-2xl font-bold text-primary">{getDaysCompleted(activeChallenge)}</div>
                       <div className="text-xs text-muted-foreground">Days Active</div>
                     </div>
                     
                     <div className="text-center">
-                      <div className="flex items-center justify-center w-12 h-12 bg-accent/10 rounded-lg mb-2 mx-auto">
-                        <CheckCircle2 className="w-6 h-6 text-accent" />
+                      <div className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-accent/10 rounded-lg mb-2 mx-auto">
+                        <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 text-accent" />
                       </div>
-                      <div className="text-2xl font-bold text-accent">
+                      <div className="text-xl sm:text-2xl font-bold text-accent">
                         {getCompletedTasksToday()}/{todaysTasks.length}
                       </div>
                       <div className="text-xs text-muted-foreground">Today's Tasks</div>
                     </div>
                     
                     <div className="text-center">
-                      <div className="flex items-center justify-center w-12 h-12 bg-secondary rounded-lg mb-2 mx-auto">
-                        <Target className="w-6 h-6 text-secondary-foreground" />
+                      <div className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-secondary rounded-lg mb-2 mx-auto">
+                        <Target className="w-5 h-5 sm:w-6 sm:h-6 text-secondary-foreground" />
                       </div>
-                      <div className="text-2xl font-bold">{activeChallenge?.challenges?.category || 'N/A'}</div>
+                      <div className="text-lg sm:text-2xl font-bold">{activeChallenge?.challenges?.category || 'N/A'}</div>
                       <div className="text-xs text-muted-foreground">Category</div>
                     </div>
                   </div>
@@ -165,6 +165,69 @@ const Dashboard = () => {
           </Card>
         </div>
 
+        {/* 30-Day Progress */}
+        {activeChallenge && (
+          <Card className="shadow-card mb-6">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <Calendar className="w-5 h-5 text-primary" />
+                <span>30-Day Progress</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 lg:grid-cols-15 gap-1 sm:gap-2 mb-4">
+                {Array.from({ length: activeChallenge.challenges?.duration_days || 30 }, (_, index) => {
+                  const dayNumber = index + 1;
+                  const isCompleted = dayNumber <= getDaysCompleted(activeChallenge);
+                  const isToday = dayNumber === getDaysCompleted(activeChallenge);
+                  
+                  return (
+                    <div
+                      key={dayNumber}
+                      className={`
+                        aspect-square rounded-md sm:rounded-lg border-2 flex items-center justify-center text-xs sm:text-sm font-medium transition-all duration-200
+                        ${isCompleted 
+                          ? 'bg-green-500 border-green-500 text-white' 
+                          : isToday
+                          ? 'bg-primary border-primary text-primary-foreground'
+                          : 'bg-muted border-muted text-muted-foreground'
+                        }
+                        ${isToday ? 'ring-1 sm:ring-2 ring-primary ring-offset-1 sm:ring-offset-2' : ''}
+                      `}
+                    >
+                      {dayNumber}
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 text-sm text-muted-foreground">
+                <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-3 h-3 bg-green-500 rounded"></div>
+                    <span className="text-xs sm:text-sm">Completed</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <div className="w-3 h-3 bg-primary rounded"></div>
+                    <span className="text-xs sm:text-sm">Today</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <div className="w-3 h-3 bg-muted rounded"></div>
+                    <span className="text-xs sm:text-sm">Upcoming</span>
+                  </div>
+                </div>
+                <div className="text-left sm:text-right">
+                  <div className="font-semibold text-foreground text-sm sm:text-base">
+                    {getDaysCompleted(activeChallenge)} / {activeChallenge.challenges?.duration_days || 30} days
+                  </div>
+                  <div className="text-xs">
+                    {Math.round((getDaysCompleted(activeChallenge) / (activeChallenge.challenges?.duration_days || 30)) * 100)}% complete
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Today's Tasks */}
         <Card className="shadow-card">
           <CardHeader>
@@ -181,10 +244,10 @@ const Dashboard = () => {
                     <div className="flex items-center space-x-3">
                     <button
                       onClick={() => markTaskComplete(task.participantId, task.taskId, !task.completed)}
-                      className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
+                      className={`w-6 h-6 sm:w-6 sm:h-6 rounded-full border-2 flex items-center justify-center transition-colors touch-manipulation ${
                         task.completed 
                           ? 'bg-accent border-accent text-accent-foreground' 
-                          : 'border-muted-foreground hover:border-accent'
+                          : 'border-muted-foreground hover:border-accent active:scale-95'
                       }`}
                     >
                         {task.completed && <CheckCircle2 className="w-4 h-4" />}

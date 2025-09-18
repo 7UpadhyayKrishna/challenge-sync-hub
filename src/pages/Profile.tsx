@@ -192,7 +192,7 @@ const Profile = () => {
   const displayName = profile?.display_name || profile?.username || user?.email?.split('@')[0] || 'User';
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-16 md:pb-0">
       <Header />
       
       <main className="container mx-auto px-4 py-8">

@@ -19,7 +19,7 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4 pb-20 md:pb-4">
       <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         {/* Left side - Branding */}
         <div className="space-y-8 text-center lg:text-left">
@@ -28,7 +28,7 @@ const Auth = () => {
               <Target className="w-7 h-7 text-primary-foreground" />
             </div>
             <h1 className="text-3xl font-bold bg-gradient-hero bg-clip-text text-transparent">
-              ChallengeHub
+              ChallengeYourself
             </h1>
           </div>
           
